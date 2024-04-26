@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth import authenticate
 from rest_framework import views, status
 from rest_framework.response import Response
@@ -19,6 +21,8 @@ class LoginView(views.APIView):
         password = request.data.get('password')
         user = authenticate(username=username, password=password)
         if user:
+            user.last_login = datetime.datetime.now()
+            user.save(update_fields=['last_login'])
             token = CustomToken.for_user(user)
             refresh = RefreshToken.for_user(user)
             return Response(
