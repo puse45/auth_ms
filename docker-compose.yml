@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  api:
+    build: .
+    hostname: ms_auth_service_center
+    container_name: ms_auth_service
+    command: gunicorn config.wsgi:application --timeout 150 --worker-class gevent --bind 0.0.0.0:8001
+    volumes:
+      - .:/ms_auth
+      - static_volume:/ms_auth/static
+      - media_volume:/ms_auth/media
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    networks:
+      - ms
+
+networks:
+  ms:
+    external: true
+
+volumes:
+  static_volume:
+  media_volume:

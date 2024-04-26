@@ -1,0 +1,6 @@
+[flake8]
+exclude = .venv, migrations, venv, env
+max-line-length = 88
+max-complexity = 50
+select = B,C,E,F,W,T4,B950
+ignore = E203, E266, E501, W503, F403, E231 W605

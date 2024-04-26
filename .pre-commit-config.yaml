@@ -1,0 +1,45 @@
+exclude: 'docs|migrations|.git'
+default_stages: [commit]
+fail_fast: true
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: debug-statements
+
+  - repo: https://github.com/psf/black
+    rev: 23.9.1
+    hooks:
+      - id: black
+    language_version: python3.10
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+        additional_dependencies: [
+          "flake8-bugbear",
+          "flake8-comprehensions",
+          "flake8-mutable",
+          "flake8-print",
+          "flake8-simplify",
+          "flake8-typing-imports"
+        ]
+
+
+ #        files: .*\_tests.py$
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest
+        language: system
+        files: \.py$
+        pass_filenames: false
+        always_run: true
