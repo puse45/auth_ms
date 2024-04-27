@@ -39,7 +39,7 @@ class LoginView(views.APIView):
             is_phone_number_verified = user.is_phone_number_verified()
             is_email_verified = user.is_email_verified()
             if not any([is_email_verified, is_phone_number_verified]):
-                message = "Your need to verify your"
+                message = "You need to verify your"
                 if is_email_verified is False:
                     message += " email."
                 elif is_phone_number_verified is False:
