@@ -12,6 +12,8 @@ class UserPhoneNumberAdminModel(admin.ModelAdmin):
         "user",
         "security_code",
         "is_verified",
+        "is_verified",
+        "is_password_reset",
         "sent_date",
         "created_at",
         "updated_at",
@@ -30,7 +32,7 @@ class UserPhoneNumberAdminModel(admin.ModelAdmin):
         "user__username",
         "security_code",
         "id",
-        "phone_number"
+        "phone_number",
     ]
     list_per_page = 50
     save_on_top = True
@@ -43,6 +45,7 @@ class UserEmailModelAdminModel(admin.ModelAdmin):
         "user",
         "security_code",
         "is_verified",
+        "is_password_reset",
         "sent_date",
         "created_at",
         "updated_at",
@@ -56,15 +59,10 @@ class UserEmailModelAdminModel(admin.ModelAdmin):
     list_display_links = [
         "email",
     ]
-    search_fields = [
-        "user__id",
-        "user__username",
-        "security_code",
-        "id",
-        "email"
-    ]
+    search_fields = ["user__id", "user__username", "security_code", "id", "email"]
     list_per_page = 50
     save_on_top = True
+
 
 @admin.register(User)
 class UserAdminModel(admin.ModelAdmin):
@@ -72,7 +70,10 @@ class UserAdminModel(admin.ModelAdmin):
     change_user_password_template = None
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("first_name", "last_name","other_names","id_number")}),
+        (
+            _("Personal info"),
+            {"fields": ("first_name", "last_name", "other_names", "id_number")},
+        ),
         (
             _("Permissions"),
             {
@@ -127,9 +128,6 @@ class UserAdminModel(admin.ModelAdmin):
     list_display_links = [
         "username",
     ]
-    search_fields = [
-        "id",
-        "username"
-    ]
+    search_fields = ["id", "username"]
     list_per_page = 50
     save_on_top = True

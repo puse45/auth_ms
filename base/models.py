@@ -13,6 +13,8 @@ from base.managers import BaseManager
 
 
 logger = logging.getLogger(__name__)
+
+
 class BaseModel(TimestampedModel):
     id = models.UUIDField(
         primary_key=True, editable=False, default=uuid.uuid4, db_index=True
@@ -27,10 +29,13 @@ class BaseModel(TimestampedModel):
         ordering = ("-updated_at", "-created_at")
         get_latest_by = ("updated_at",)
 
+
 class VerificationModel(models.Model):
     security_code = models.CharField(max_length=20)
     is_verified = models.BooleanField(default=False)
+    is_password_reset = models.BooleanField(default=False)
     sent_date = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+
     class Meta:
         abstract = True
 
@@ -44,25 +49,27 @@ class VerificationModel(models.Model):
             logger.error(f"Sent, date is not set {e}")
             return False
 
-    def send_confirmation(self):
+    def send_confirmation_code(self):
         ...
 
-
-    def check_verification(self, security_code):
+    def check_verification(self, security_code, reset_password=False):
         if (
-                not self.is_security_code_expired()
-                and security_code == self.security_code
-                and not self.is_verified
+            not self.is_security_code_expired()
+            and security_code == self.security_code
+            and (not self.is_verified or all([reset_password, self.is_password_reset]))
         ):
             self.is_verified = True
+            if reset_password:
+                self.is_password_reset = False
             self.save()
         else:
             raise NotAcceptable(
                 _(
-                    "Your security code is wrong, expired or this email is verified before."
+                    "Your OTP is wrong or expired or "
+                    "this email is verified or "
+                    "password password has been reset."
                 )
             )
-
         return self.is_verified
 
 

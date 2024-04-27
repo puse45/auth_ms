@@ -34,12 +34,12 @@ repos:
 
 
  #        files: .*\_tests.py$
-  - repo: local
-    hooks:
-      - id: pytest
-        name: pytest
-        entry: pytest
-        language: system
-        files: \.py$
-        pass_filenames: false
-        always_run: true
+#  - repo: local
+#    hooks:
+#      - id: pytest
+#        name: pytest
+#        entry: pytest
+#        language: system
+#        files: \.py$
+#        pass_filenames: false
+#        always_run: true

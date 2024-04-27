@@ -17,6 +17,7 @@ gunicorn[gevent]
 phonenumbers==8.13.35
 pre-commit==3.7.0
 python-decouple==3.8
+pytz==2024.1
 redis==5.0.4
 requests==2.31.0
 sentry-sdk==2.0.1
