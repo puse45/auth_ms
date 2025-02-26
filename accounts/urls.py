@@ -34,7 +34,7 @@ api_urlpatterns = [
     path("register/", UserRegistrationView.as_view(), name="register"),
     path("login/", LoginView.as_view(), name="login"),
     path("login/sso/", google_login, name="google_login"),
-    path("", include(router.urls)),
+    path("", include(router.urls), name="account-home"),
     path("auth/callback/", auth_callback, name="auth_callback"),
     path("profile/", ProfileView.as_view(), name="profile"),
 ]

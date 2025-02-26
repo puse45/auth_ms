@@ -6,6 +6,7 @@ from django.contrib.auth import login
 from authlib.integrations.django_client import OAuth
 from django.conf import settings
 from django.contrib.auth import authenticate
+from django.urls import reverse
 from rest_framework import views, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -40,13 +41,20 @@ oauth.register(
 )
 
 
+def replace_http_with_https(url):
+    if url.startswith("http://"):
+        return url.replace(
+            "http://", "https://", 1
+        )  # Replace only the first occurrence
+    return url
+
+
 def google_login(request):
-    metadata = oauth.google.load_server_metadata()
-    print(metadata)
     state = signing.dumps({"some_data": "value"})
     request.session["state"] = state  # Store in session
-    redirect_uri = f"{settings.SITE_URL}/api/auth/callback/"
-    return oauth.google.authorize_redirect(request, redirect_uri, state=state)
+    redirect_uri = request.build_absolute_uri(reverse("api:auth_callback"))
+    new_redirect_uri = replace_http_with_https(redirect_uri)
+    return oauth.google.authorize_redirect(request, new_redirect_uri, state=state)
 
 
 def auth_callback(request):
@@ -59,7 +67,7 @@ def auth_callback(request):
     user = authenticate(request, user_info=user_info)
     if user:
         login(request, user)
-        return redirect("/profile")
+        return redirect("api:profile")
     return redirect("/")
 
 

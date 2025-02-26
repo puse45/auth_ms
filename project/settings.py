@@ -241,6 +241,8 @@ PHONENUMBER_DEFAULT_REGION = "KE"
 
 
 OAUTH2_PROVIDER = {
+    "ACCESS_TOKEN_EXPIRE_SECONDS": 36000,
+    "OIDC_ENABLED": True,
     "SCOPES": {
         "openid": "OpenID Connect scope",
         "profile": "Access to your profile information",
