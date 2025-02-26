@@ -68,6 +68,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 ROOT_URLCONF = "project.urls"
@@ -107,11 +108,15 @@ REST_FRAMEWORK = {
         # "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
+        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
     ),
     "DEFAULT_RENDERER_CLASSES": (
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
     ),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.AcceptHeaderVersioning",
     "DEFAULT_VERSION": "v1",
 }
@@ -233,3 +238,16 @@ sentry_sdk.init(
 )
 
 PHONENUMBER_DEFAULT_REGION = "KE"
+
+
+OAUTH2_PROVIDER = {
+    "SCOPES": {
+        "openid": "OpenID Connect scope",
+        "profile": "Access to your profile information",
+        "email": "Access to your email address",
+    },
+}
+
+GOOGLE_CLIENT_ID = config("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = config("GOOGLE_CLIENT_SECRET")
+SITE_URL = config("SITE_URL")

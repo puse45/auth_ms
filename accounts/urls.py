@@ -9,6 +9,9 @@ from accounts.views import (
     ResetPasswordView,
     ResetPasswordConfirmationView,
     PasswordChangeView,
+    auth_callback,
+    google_login,
+    ProfileView,
 )
 from accounts.viewsets import UserViewSet
 
@@ -30,5 +33,8 @@ api_urlpatterns = [
     path("generate/otp/", GenerateOTPView.as_view(), name="generate-otp"),
     path("register/", UserRegistrationView.as_view(), name="register"),
     path("login/", LoginView.as_view(), name="login"),
+    path("login/sso/", google_login, name="google_login"),
     path("", include(router.urls)),
+    path("auth/callback/", auth_callback, name="auth_callback"),
+    path("profile/", ProfileView.as_view(), name="profile"),
 ]
